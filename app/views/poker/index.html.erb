@@ -1,0 +1,80 @@
+<%= form_tag(poker_index_path, method: 'post') do %>
+  <table class="table">
+    <tr>
+      <td>
+        <%= text_field_tag :card, '', class: "keyword-input", placeholder: "Card" %>
+      </td>
+      <td><%= submit_tag "Check" %>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<% if @card %>
+  <%= @hand = @card.split(' ') %><br>
+
+  <!-- cardnuudiig 5 salgah ehelj bn -->
+  <% @card1 = @hand.first %>
+  <% @card2 = @hand.second %>
+  <% @card3 = @hand.third %>
+  <% @card4 = @hand.fourth %>
+  <% @card5 = @hand.fifth %>
+  <!-- cardnuudiig 5 salgah duusaj bn -->
+  
+  <!-- cardnii usegiig salgah ehelj bn -->
+  <% @suit1 = @card1[0] %>
+  <% @suit2 = @card2[0] %>
+  <% @suit3 = @card3[0] %>
+  <% @suit4 = @card4[0] %>
+  <% @suit5 = @card5[0] %>
+  <!-- cardnii usegiig salgah duusaj bn -->
+
+  <!-- cardnii toog salgah ehelj bn -->
+  <% if @card1[2].nil? %>
+    <% @number1 = @card1[1] %>
+  <% else %>
+    <% @number1 = @card1[1] += @card1[2] %>
+  <% end %>
+
+  <% if @card2[2].nil? %>
+    <% @number2 = @card2[1] %>
+  <% else %>
+    <% @number2 = @card2[1] += @card2[2] %>
+  <% end %>
+
+  <% if @card3[2].nil? %>
+    <% @number3 = @card3[1] %>
+  <% else %>
+    <% @number3 = @card3[1] += @card3[2] %>
+  <% end %>
+
+  <% if @card4[2].nil? %>
+    <% @number4 = @card4[1] %>
+  <% else %>
+    <% @number4 = @card4[1] += @card4[2] %>
+  <% end %>
+
+  <% if @card5[2].nil? %>
+    <% @number5 = @card5[1] %>
+  <% else %>
+    <% @number5 = @card5[1] += @card5[2] %>
+  <% end %>
+
+  <!-- cardnii toog salgah duusaj bn -->
+
+  <% if straight_flash(@suit1, @suit2, @suit3, @suit4, @suit5, @number1, @number2, @number3, @number4, @number5, @result) == 1 %>
+    Straight Flash
+  <% elsif straight_flash(@suit1, @suit2, @suit3, @suit4, @suit5, @number1, @number2, @number3, @number4, @number5, @result) == 0 %>
+    <% if four_of_a_kind(@suit1, @suit2, @suit3, @suit4, @suit5, @result) == 1 %>
+      Four of a kind
+    <% elsif four_of_a_kind(@suit1, @suit2, @suit3, @suit4, @suit5, @result) == 0 %>
+      <% if full_house(@number1, @number2, @number3, @number4, @number5, @result) == 1 %>
+        Full House
+      <% elsif full_house(@number1, @number2, @number3, @number4, @number5, @result) == 0 %>
+        <% if flash(@suit1, @suit2, @suit3, @suit4, @suit5, @result) == 1 %>
+          Flash
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
